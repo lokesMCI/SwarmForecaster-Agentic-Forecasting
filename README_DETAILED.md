@@ -240,7 +240,10 @@ These were found by testing in the event repo on 3 Nov. The copy in the event re
 2. **Percent answers from panellists.** A `p_dem` of `62` (meaning 62%) was clipped to 0.99 before the divide-by-100 check could run. It's now converted first.
 3. **No crossing the market.** Added after run 2 showed Iowa's answer (52) landing above the market (50) when our own view was 45.
 4. **Stricter final prompt.** Added after run 2's final calls overrode the method by 6–8 points in Maine, FL-14 and FL-22 just to split the difference. The final call may now deviate only for a named error.
-5. **Ignore swarm outputs in git.** `swarm_out/` and `swarm_*.log` were added to `.gitignore`, so later runs aren't flagged as having uncommitted changes.
+5. **Retry cut-off and unreadable replies.** Reasoning tokens count against `max_tokens`, and in run 2 that cut off **6 of 25 DeepSeek critiques** before their JSON verdict (A3, A7, A10, B1, B5 and B7), so their reviews were silently lost. The critic now gets 6,000 tokens. Every stage checks its reply: the panel needs `p_dem` or all four scenario moves, the critic `direction` and `issues`, the supervisors `adjust` and `notes`, and each final a readable `answer`. A reply that fails is retried with double the token budget (at most 12,000), and every retry is traced.
+6. **Research never reports market odds.** In run 2, a stale Kalshi price reached the blind MI-04 panel through the research. Scouts are now told not to report prediction-market or betting prices.
+7. **Run manifest and completeness report.** `data_desk.json` now records the git commit, the models and the constants. At the end, the run lists any question without a final answer (rerun it under the same label, never by hand) and any final that departed from the method. It also warns if the code has uncommitted changes.
+8. **Ignore swarm outputs in git.** `swarm_out/` and `swarm_*.log` were added to `.gitignore`, so later runs aren't flagged as having uncommitted changes.
 
 The constants (`EXTREMIZE`, `MODEL_WEIGHT`, `W_IDIO`, `W_SHARED`, `DRIFT_SCALE`, `CAP_PTS`, `B_SHRINK`, `RHO`) didn't change, and none was tuned against today's answers.
 
