@@ -4,7 +4,7 @@
 
 This document explains how the swarm reaches each of its 25 answers (A1–A15 and B1–B10): what evidence it uses, who checks it, and what limits stop any one model from pushing an answer too far. The short README is in `README.md`. This file is the detailed version.
 
-**Final submitted run: `team-dsl-run-3`** (3 Nov 2026, 21:20–21:31 GMT), submitted at 21:31:53 GMT. All numbers in section 4 come from that run. Earlier runs (1 and 2) are explained in section 9.
+**Final submitted run: `team-dsl-run-3`** (3 Nov 2026, 21:20–21:31 GMT), submitted at 21:31:53 GMT and resubmitted unchanged at 21:39:06 GMT (version 3, team name Darkknight). All numbers in section 4 come from that run. Earlier runs (1 and 2) are explained in section 9.
 
 ---
 
@@ -279,7 +279,7 @@ ftf.submit(answers, run=3)                 # the real submission
 |---|---|
 | **Final run** | `team-dsl-run-3`: one complete run of the pipeline above, from research to final, for all 25 questions |
 | **Code** | git commit `6d9c2ee`, no uncommitted changes (recorded in `swarm_out/run-3/data_desk.json`) |
-| **Submitted** | 21:31:53 GMT on 3 Nov 2026, submission `0995fa7e-9c01-4588-8fc6-d3330b9d1c43`, version 2, team name Darkknight |
+| **Submitted** | 21:31:53 GMT on 3 Nov 2026 (submission `0995fa7e-9c01-4588-8fc6-d3330b9d1c43`, version 2), then resubmitted at 21:39:06 GMT with the identical answers (same hash `d2c4ed06…`) to set the team name to Darkknight: submission `b89938f0-b75e-4746-beba-bf4aec1c634d`, **version 3** |
 | **Answers** | Equal to the last final call of each question in run 3; the dry run raised no warnings |
 | **After the run** | No model calls were made by any team machine |
 
