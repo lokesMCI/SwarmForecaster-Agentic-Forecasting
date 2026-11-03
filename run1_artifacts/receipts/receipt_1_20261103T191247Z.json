@@ -1,0 +1,10 @@
+{
+  "test": true,
+  "stored": false,
+  "submission_id": "test-8a6d6749-0e7e-4a8f-ba51-ba789d9b5dad",
+  "received_at": "2026-11-03T19:12:48.333Z",
+  "hash": "879bae300d7da8540545efc2084b71eed6cf91b1c755ebdf7808b069818ad9e0",
+  "team": "team-dsl",
+  "answers": 25,
+  "note": "Test only: nothing was saved. Real submissions go to /api/ftf-2026/submit between 12:00 GMT on 1 November and 22:00 GMT on 3 November."
+}

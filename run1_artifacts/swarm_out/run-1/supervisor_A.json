@@ -1,0 +1,39 @@
+{
+  "text": "**Cross\u2011question coherence review**\n\n**1. Senate arithmetic vs. A15 (main issue).** Using our recommended numbers, the expected Democratic pickups across the six GOP-held races we cover (ME 70, TX 67, OH 72, IA 49, KS 61, AK 68) is \u22483.87, and that must be combined with holding Michigan at 82. Even with a strongly correlated national error, P(\u22654 pickups **and** all holds) from these inputs lands well under 0.75 \u2014 the market's own race prices (sum \u22484.29, MI 79.5) are what support a ~76 control number, plus any flip paths outside our question set (not documented here, so I won't assume them). Resolution: nudge A15 down modestly and MI up slightly rather than re-pricing six races. A15 \u22122 (to 73), A3 +1 (to 83, also the direction the critic flags: toward market/hold risk is on the downside of our 86.9 own estimate, and 82 is already there).\n\n**2. A14 House.** Coherent: 95 vs market 94.2 and the scenario-implied D House 0.942; Cook/Inside Elections ranges (Oct 30 / Nov 2) imply a gain well past the 4 seats needed. Critic rightly notes the Oct 23 Silver inputs are older than one week, but it doesn't move the estimate. 0.\n\n**3. House districts.** FL\u201114, FL\u201122, MI\u201104, VA\u201101 all show 18\u201325pt gaps between panel fundamentals and market. A uniform 95 at the national level plus D+8\u20139 generic (RCP Nov 2) does make toss-ups break Democratic, so deferring part-way to market is right; but VA\u201101 at 78 and MT\u201101 at 59 are the two where the critic independently flags over-pricing and where our documented evidence is only \"toss-up.\" A13 \u22123 (to 69), A12 \u22122 (to 54). A9 \u22122 (to 60) for the same reason, since FL\u201122 is a Trump+14 seat under the May 2026 map and 67.5 is hard to justify from anything dated. A8, A11 left alone (no critic issue, redistricting/ratings support the market tilt). A10 ME\u201102 at 40 matches market 39.8 \u2014 fine, and note it is *not* incoherent with a D wave given Golden's seat specifics.\n\n**4. Correlation discipline.** Every brief repeats the same D+8\u20139 generic ballot and sub\u201135 Trump approval; several panels counted it once as \"environment\" and again via forecaster ratings that already embed it. That double counting is the likely source of our race-level estimates clustering above fundamentals while A15 was *also* pushed up \u2014 hence the small haircut on A15 instead of race-by-race cuts.\n\n**5. Election-day inputs.** No results, no exit polls (polls close 23:00 UTC); early-vote composition and the isolated Maricopa/Fulton equipment issues carry no signal. VIX 21.15 is not election-specific. No adjustments.\n\n{\"adjust\": {\"A1\": 0, \"A2\": 0, \"A3\": 1, \"A4\": 0, \"A5\": 0, \"A6\": 0, \"A7\": 0, \"A8\": 0, \"A9\": -2, \"A10\": 0, \"A11\": 0, \"A12\": -2, \"A13\": -3, \"A14\": 0, \"A15\": -2}, \"notes\": {\"A1\": \"No change; critic's away-from-market view already absorbed in 67 vs market 72.\", \"A2\": \"Coherent with Lean D consensus; no issue.\", \"A3\": \"Raise to 83; MI hold at 82 was the binding drag making A15=75 arithmetically hard.\", \"A4\": \"Market and own estimate agree at ~72; fine.\", \"A5\": \"49 is coherent as the weakest pickup; no change.\", \"A6\": \"Hold; market already prices late polls.\", \"A7\": \"Hold at 68 despite DDHQ 61 and RCV uncertainty; within tolerance.\", \"A8\": \"No critic issue; redistricting/toss-up ratings support partial deference to 75.8.\", \"A9\": \"-2: Trump+14 seat under May 2026 map; 67.5 unsupported by dated evidence.\", \"A10\": \"Matches market; not incoherent with a D wave given district specifics.\", \"A11\": \"No critic issue; leave at 55.\", \"A12\": \"-2: R+5 baseline underweighted, stale outlier poll.\", \"A13\": \"-3: only toss-up evidence documented; 78 over-priced and panel leaned on one partisan internal.\", \"A14\": \"Coherent with Cook/Inside Elections and scenario-implied 0.942; stale Oct 23 inputs noted but immaterial.\", \"A15\": \"-2 to 73: our recommended race probs imply ~3.9 expected pickups plus an 82% MI hold, which cannot support 75 even under strong correlation.\"}}",
+  "parsed": {
+    "adjust": {
+      "A1": 0,
+      "A2": 0,
+      "A3": 1,
+      "A4": 0,
+      "A5": 0,
+      "A6": 0,
+      "A7": 0,
+      "A8": 0,
+      "A9": -2,
+      "A10": 0,
+      "A11": 0,
+      "A12": -2,
+      "A13": -3,
+      "A14": 0,
+      "A15": -2
+    },
+    "notes": {
+      "A1": "No change; critic's away-from-market view already absorbed in 67 vs market 72.",
+      "A2": "Coherent with Lean D consensus; no issue.",
+      "A3": "Raise to 83; MI hold at 82 was the binding drag making A15=75 arithmetically hard.",
+      "A4": "Market and own estimate agree at ~72; fine.",
+      "A5": "49 is coherent as the weakest pickup; no change.",
+      "A6": "Hold; market already prices late polls.",
+      "A7": "Hold at 68 despite DDHQ 61 and RCV uncertainty; within tolerance.",
+      "A8": "No critic issue; redistricting/toss-up ratings support partial deference to 75.8.",
+      "A9": "-2: Trump+14 seat under May 2026 map; 67.5 unsupported by dated evidence.",
+      "A10": "Matches market; not incoherent with a D wave given district specifics.",
+      "A11": "No critic issue; leave at 55.",
+      "A12": "-2: R+5 baseline underweighted, stale outlier poll.",
+      "A13": "-3: only toss-up evidence documented; 78 over-priced and panel leaned on one partisan internal.",
+      "A14": "Coherent with Cook/Inside Elections and scenario-implied 0.942; stale Oct 23 inputs noted but immaterial.",
+      "A15": "-2 to 73: our recommended race probs imply ~3.9 expected pickups plus an 82% MI hold, which cannot support 75 even under strong correlation."
+    }
+  }
+}

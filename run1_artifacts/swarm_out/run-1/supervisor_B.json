@@ -1,0 +1,29 @@
+{
+  "text": "## Cross-market consistency review (Part B, 3\u21924 Nov close)\n\n**1. Equities vs VIX \u2014 main inconsistency.** B4 implies VIX \u22121.6 from 21.15 (\u2248 \u22127.5%, a solid vol crush) while B1/B2/B3 are all negative (SPY \u22120.14, IWM \u22120.43, NVDA \u22120.20). A 7\u20138% VIX decline is empirically paired with SPY roughly flat-to-up (+0.2 to +0.5%); SPY down with VIX down that much is a rare combination. Also note the 21.15 VIX figure is from the 3 Nov brief and is a pre-close print, so the base itself is uncertain. Resolution: split the difference \u2014 nudge equities up toward flat and shrink the VIX decline modestly.\n\n**2. Small-cap beta.** IWM at \u22120.43 vs SPY \u22120.14 is a 3x beta on a down day; typical beta to SPY is ~1.2\u20131.5. If an election outcome is the driver, domestically-exposed small caps are as likely to catch a relief bid. B2 is the most over-extended leg; raise it.\n\n**3. NVDA.** \u22120.20 with typical daily move 1.36 is a very small tilt, internally fine, but it should be the *most* negative leg if the driver is the AI-financing/tech weakness cited in the 3 Nov brief, and the *least* negative if the driver is post-election vol crush. Mild upward nudge to stay coherent with reduced VIX.\n\n**4. Curve (B5/B6).** 2y \u22121.7bp vs 10y \u22121.5bp = slight bull-steepening of 0.2bp \u2014 essentially flat, defensible and not inconsistent with either direction. Both are well inside the 3.0/4.0bp typical move. No change.\n\n**5. Gilts following Treasuries.** B7 \u22120.7bp against UST 10y \u22121.5bp is a ~45% beta. Day-after-US-election gilt betas are typically 0.4\u20130.6 with the UK adding idiosyncratic noise, so this is well calibrated. No change.\n\n**6. Gold vs yields.** Gold +0.15% with yields down ~1.5bp across the curve and a softer dollar implied is directionally consistent and conservatively sized versus 0.669% typical. If equities get nudged up and VIX down less, the safe-haven component weakens slightly \u2014 trim marginally.\n\n**7. Oil vs equities.** B9 +0.3% with equities down is the second-order tension: crude up on a mildly risk-off equity day. Once B1/B2 are nudged toward flat this resolves itself, so leave B9 alone.\n\n**8. Nat gas.** B10 is weather/storage-driven, largely orthogonal to the risk-on/off axis; no cross-market constraint binds. Hold, consistent with its critic.\n\n**Net effect:** the swarm has encoded \"post-election vol crush\" in B4 but \"risk-off drift\" in B1\u2013B3. Adjustments below push the complex to a coherent mild relief-rally-with-vol-crush, with all moves still small relative to typical daily ranges.\n\n{\"adjust\": {\"B1\": 0.14, \"B2\": 0.23, \"B3\": 0.20, \"B4\": 0.30, \"B5\": 0, \"B6\": 0, \"B7\": 0, \"B8\": -0.04, \"B9\": 0, \"B10\": 0}, \"notes\": {\"B1\": \"To ~0.00: SPY down while VIX falls 7.5% is incoherent; flat is the consistent pairing.\", \"B2\": \"To ~-0.20: -0.43 implied 3x beta to SPY on a down day; excessive for a vol-crush scenario.\", \"B3\": \"To ~0.00: aligns with reduced VIX decline; tech weakness already in 3 Nov base.\", \"B4\": \"To ~-1.3: shrink crush per critic (pre-close 21.15 base, 2022 positive precedent, double-counted event premium); meets equities halfway.\", \"B5\": \"No change; 2y -1.7bp coherent with 10y and well inside 3.0bp typical.\", \"B6\": \"No change; 0.2bp bull-steepen vs 2y is negligible and defensible.\", \"B7\": \"No change; ~45% beta to UST 10y is in the normal 0.4-0.6 range.\", \"B8\": \"To ~0.11: slightly less safe-haven demand once equities nudged to flat; stays yield-consistent.\", \"B9\": \"No change; oil-equity tension resolves once B1/B2 moved toward flat.\", \"B10\": \"Hold per critic; weather/storage-driven and orthogonal to the risk axis.\"}}",
+  "parsed": {
+    "adjust": {
+      "B1": 0.14,
+      "B2": 0.23,
+      "B3": 0.2,
+      "B4": 0.3,
+      "B5": 0,
+      "B6": 0,
+      "B7": 0,
+      "B8": -0.04,
+      "B9": 0,
+      "B10": 0
+    },
+    "notes": {
+      "B1": "To ~0.00: SPY down while VIX falls 7.5% is incoherent; flat is the consistent pairing.",
+      "B2": "To ~-0.20: -0.43 implied 3x beta to SPY on a down day; excessive for a vol-crush scenario.",
+      "B3": "To ~0.00: aligns with reduced VIX decline; tech weakness already in 3 Nov base.",
+      "B4": "To ~-1.3: shrink crush per critic (pre-close 21.15 base, 2022 positive precedent, double-counted event premium); meets equities halfway.",
+      "B5": "No change; 2y -1.7bp coherent with 10y and well inside 3.0bp typical.",
+      "B6": "No change; 0.2bp bull-steepen vs 2y is negligible and defensible.",
+      "B7": "No change; ~45% beta to UST 10y is in the normal 0.4-0.6 range.",
+      "B8": "To ~0.11: slightly less safe-haven demand once equities nudged to flat; stays yield-consistent.",
+      "B9": "No change; oil-equity tension resolves once B1/B2 moved toward flat.",
+      "B10": "Hold per critic; weather/storage-driven and orthogonal to the risk axis."
+    }
+  }
+}

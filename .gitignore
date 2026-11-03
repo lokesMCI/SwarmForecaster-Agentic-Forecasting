@@ -1,0 +1,21 @@
+# Secrets: never commit. Copy .env.example to .env in the event repo folder.
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Live working directories created by a run inside the event repo
+# (root-anchored so the archived run1_artifacts/ traces stay tracked)
+/.ftf/
+/answers/
+/receipts/
+/swarm_out/
+swarm_*.log
+
+# The event data pack is not redistributed: see README.md
+data/
+
+# macOS
+.DS_Store
