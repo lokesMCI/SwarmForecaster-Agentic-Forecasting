@@ -1,4 +1,4 @@
-# team-dsl (DarkKnight): a market-anchored forecasting swarm
+# team-dsl (Darkknight): a market-anchored forecasting swarm
 
 **Idea.** Recent work on LLM forecasting shows LLMs alone trail liquid markets, but a market-anchored blend beats them (AIA Forecaster, arXiv 2511.07678: ≈⅔ market + ⅓ model). We are scored on Brier gain over the market, so the swarm forms an independent view and moves away from the market only by a bounded, rule-based amount. Code: `swarm/swarm.py`, `swarm/data_desk.py`; the outputs of every stage are saved under `swarm_out/run-<n>/`.
 

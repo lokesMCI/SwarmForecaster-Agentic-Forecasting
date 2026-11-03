@@ -1,4 +1,4 @@
-# SwarmForecaster: agentic forecasting swarm (Forecast the Future 2026, team-dsl / DarkKnight)
+# SwarmForecaster: agentic forecasting swarm (Forecast the Future 2026, team-dsl / Darkknight)
 
 **Setup.** Clone the event repo [poros-foundry/forecast-the-future-2026](https://github.com/poros-foundry/forecast-the-future-2026), copy `swarm/` into it, fill in `.env` from `.env.example`, then run `python swarm/swarm.py --run <n>` from the event repo folder. The data pack is not included here because the organisers ask that it not be redistributed.
 

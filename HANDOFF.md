@@ -1,4 +1,4 @@
-# HANDOFF: Forecast the Future 2026, AI-only track (team-dsl / "DarkKnight")
+# HANDOFF: Forecast the Future 2026, AI-only track (team-dsl / "Darkknight")
 
 Read this first. It is the full state of the work as of **18:45 GMT, Tue 3 Nov 2026**. Hard deadline: **22:00 GMT** for both the submission and the README email.
 
@@ -23,7 +23,7 @@ pip install -r requirements.txt
 # copy this repo's swarm/ folder into ftf/swarm/
 # create ftf/.env (never commit it); the swarm script loads it:
 #   OPENROUTER_API_KEY=<team key>   TEAM_ID=team-dsl   SUBMIT_CODE=<code>
-#   TEAM_NAME=DarkKnight   FTF_TEST_MODE=1
+#   TEAM_NAME=Darkknight   FTF_TEST_MODE=1
 printf '\n.env\nswarm_out/\nswarm_*.log\n' >> .gitignore
 git add -A && git commit -m "Add team-dsl swarm"
 ```
@@ -56,7 +56,7 @@ Optional: copy `run1_artifacts/` from the handoff zip into `ftf/`. It contains `
 
 ## 5. What is NOT done: TO DO in order
 1. **Submit run 1 as a safety entry, NOW.** The cloud sandbox could not reach `porosfoundry.ai`, so nothing has been submitted yet. Option (a) sends the exact same request `submit()` makes, so it does not need a Python setup:
-   - (a) `curl -sS -X POST https://porosfoundry.ai/api/ftf-2026/submit-test -H 'Content-Type: application/json' -d '{"team":"team-dsl","code":"<SUBMIT_CODE>","track":"ai-only","run":"team-dsl-run-1","team_name":"DarkKnight","answers":{"A1":69,"A2":72,"A3":83,"A4":73,"A5":51,"A6":63,"A7":69,"A8":71,"A9":65,"A10":41,"A11":57,"A12":58,"A13":76,"A14":95,"A15":74,"B1":-0.03,"B2":-0.25,"B3":-0.04,"B4":-1.4,"B5":-1.8,"B6":-1.5,"B7":-0.7,"B8":0.12,"B9":0.3,"B10":0.18}}'`. If that returns a receipt, repeat it with `/submit` in place of `/submit-test`.
+   - (a) `curl -sS -X POST https://porosfoundry.ai/api/ftf-2026/submit-test -H 'Content-Type: application/json' -d '{"team":"team-dsl","code":"<SUBMIT_CODE>","track":"ai-only","run":"team-dsl-run-1","team_name":"Darkknight","answers":{"A1":69,"A2":72,"A3":83,"A4":73,"A5":51,"A6":63,"A7":69,"A8":71,"A9":65,"A10":41,"A11":57,"A12":58,"A13":76,"A14":95,"A15":74,"B1":-0.03,"B2":-0.25,"B3":-0.04,"B4":-1.4,"B5":-1.8,"B6":-1.5,"B7":-0.7,"B8":0.12,"B9":0.3,"B10":0.18}}'`. If that returns a receipt, repeat it with `/submit` in place of `/submit-test`.
    - (b) With the run 1 artifacts copied in: `FTF_TEST_MODE=0`, then `ftf.submit(ftf.answers_from_finals(1), run=1)`.
 2. **Check live data works locally:** `python -c "import sys;sys.path.insert(0,'ai_only');import ftf_tools;print(ftf_tools.get_market_odds('A1',days=1)['source'])"` should print `live`. In the cloud it always fell back to the data pack, whose last row is 15:00.
 3. **Optional improvements (only before about 20:45; one quick `--run test2 --questions A1,A13,B4` check, then commit):**
