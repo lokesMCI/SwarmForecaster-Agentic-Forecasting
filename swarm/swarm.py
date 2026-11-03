@@ -33,11 +33,11 @@ import ftf  # noqa: E402
 import data_desk  # noqa: E402
 
 M = ftf.APPROVED_MODELS
-SCOUT = M["Gemini 3.8 Flash"]                  # cheap, online research
-PANEL = [M["Claude Sonnet 5"], M["GPT-6 Sol"], M["Gemini 4 Argon"]]  # diverse forecasters
-CRITIC = M["DeepSeek V4 Pro 0423"]
+SCOUT = M["Claude Sonnet 5"]                  # cheap, online research
+PANEL = [M["Claude Opus 5"], M["Claude Sonnet 5"], M["GPT-6 Sol"], M["Gemini 4 Argon"]]  # diverse forecasters
+CRITIC = M["Claude Opus 5"]
 SUPERVISOR = M["Claude Opus 5"]
-FINAL = M["Claude Sonnet 5"]
+FINAL = M["Claude Opus 5"]
 
 # Aggregation constants (fixed method, set before seeing any of today's answers)
 EXTREMIZE = 1.25      # log-odds multiplier; LLM forecasts hedge toward 50% (AIA Forecaster, Platt scaling)
@@ -187,7 +187,7 @@ class Swarm:
                        "(data releases, earnings, OPEC, inventories, central banks), and how this instrument is "
                        "expected to react to each US midterm outcome. Max 350 words, dated, sourced.")
             return qid, call(qid, "research", ask, SCOUT, self.run, online=True, max_tokens=3000)
-        with cf.ThreadPoolExecutor(8) as ex:
+        with cf.ThreadPoolExecutor(25) as ex:
             for qid, notes in ex.map(targeted, self.qids):
                 self.state[qid]["research"] = notes
 
@@ -236,7 +236,7 @@ class Swarm:
             txt = call(qid, "forecast", self.panel_prompt(qid), m, self.run, max_tokens=3000, temperature=0.2,
                        check=self.panel_ok(qid))
             return qid, m, txt, last_json(txt)
-        with cf.ThreadPoolExecutor(12) as ex:
+        with cf.ThreadPoolExecutor(25) as ex:
             for qid, m, txt, js in ex.map(one, jobs):
                 self.state[qid].setdefault("panel", []).append({"model": m, "parsed": js, "text": txt[-1500:]})
 
@@ -257,7 +257,7 @@ class Swarm:
             # 2500 tokens cut off 6 of 25 DeepSeek critiques in run 2 before their JSON line
             return qid, call(qid, "critique", prompt, CRITIC, self.run, max_tokens=6000,
                              check=has_keys("direction", "issues"))
-        with cf.ThreadPoolExecutor(10) as ex:
+        with cf.ThreadPoolExecutor(25) as ex:
             for qid, txt in ex.map(one, self.qids):
                 self.state[qid]["critic"] = {"text": txt[-1500:], "parsed": last_json(txt)}
 
@@ -427,7 +427,7 @@ class Swarm:
             # a final without a readable answer would leave the run incomplete, so it is retried too
             return qid, call(qid, "final", prompt, FINAL, self.run, max_tokens=2000, temperature=0,
                              check=lambda txt: final_answer(txt, qid) is not None)
-        with cf.ThreadPoolExecutor(10) as ex:
+        with cf.ThreadPoolExecutor(25) as ex:
             for qid, txt in ex.map(one, self.qids):
                 self.state[qid]["final"] = {"text": txt, "parsed": ftf.parse_final(txt, qid)}
 

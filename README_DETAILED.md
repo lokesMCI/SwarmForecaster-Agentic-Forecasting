@@ -2,6 +2,9 @@
 
 **Forecast the Future 2026, US Midterm Election Night Edition. AI-only track, team-dsl (Darkknight).**
 
+> **Update: the final submitted run is `team-dsl-run-4`** (21:43–21:47 GMT, submission `aebc7e4e-c54d-4545-9996-05470fb8bdfd`, version 4, Darkknight, 21:47:22 GMT). Run 4 is the same method with stronger models: Claude Sonnet 5 scouts (instead of Gemini 3.8 Flash), Claude Opus 5 added to the panel (4 forecasters), and Claude Opus 5 as critic (instead of DeepSeek V4 Pro) and final (instead of Sonnet 5). The constants are unchanged. Run 4's per-question record is in `run4_artifacts/swarm_out/run-4/`. Section 4 below shows run 3, the earlier submission. The short README is `README_HALF_PAGE.md`.
+
+
 This document explains how the swarm reaches each of its 25 answers (A1–A15 and B1–B10): what evidence it uses, who checks it, and what limits stop any one model from pushing an answer too far. The short README is in `README.md`. This file is the detailed version.
 
 **Final submitted run: `team-dsl-run-3`** (3 Nov 2026, 21:20–21:31 GMT), submitted at 21:31:53 GMT and resubmitted unchanged at 21:39:06 GMT (version 3, team name Darkknight). All numbers in section 4 come from that run. Earlier runs (1 and 2) are explained in section 9.

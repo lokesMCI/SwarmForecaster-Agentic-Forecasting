@@ -1,0 +1,52 @@
+{
+  "team": "team-dsl",
+  "track": "ai-only",
+  "run": "team-dsl-run-4",
+  "answers": {
+    "A1": 73,
+    "A2": 74,
+    "A3": 81,
+    "A4": 74,
+    "A5": 49,
+    "A6": 64,
+    "A7": 69,
+    "A8": 71,
+    "A9": 66,
+    "A10": 37,
+    "A11": 60,
+    "A12": 58,
+    "A13": 74,
+    "A14": 96,
+    "A15": 78,
+    "B1": 0.2,
+    "B2": -0.1,
+    "B3": -0.05,
+    "B4": -1.2,
+    "B5": -0.7,
+    "B6": -1.4,
+    "B7": -0.2,
+    "B8": 0.18,
+    "B9": -0.26,
+    "B10": -0.34
+  },
+  "helper_version": "2026-10-31",
+  "run_summary": {
+    "calls": 182,
+    "calls_by_role": {
+      "research": 30,
+      "forecast": 100,
+      "critique": 25,
+      "aggregate": 2,
+      "final": 25
+    },
+    "models": [
+      "anthropic/claude-opus-5",
+      "anthropic/claude-sonnet-5",
+      "google/gemini-4-argon",
+      "openai/gpt-6-sol"
+    ],
+    "first_call": "2026-11-03T21:44:13+00:00",
+    "last_call": "2026-11-03T21:47:16+00:00"
+  },
+  "warnings": []
+}

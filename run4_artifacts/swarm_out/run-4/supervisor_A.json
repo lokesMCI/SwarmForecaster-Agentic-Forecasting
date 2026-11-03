@@ -1,0 +1,40 @@
+{
+  "text": "**Senate seat math (explicit).** Democrats start at 47 (incl. 2 independents caucusing D), and with the VP Republican they need 51. Seats they must hold: MI (A3 recommended 82% D hold \u2014 counted as a hold, not a pickup), GA (Ossoff, NPR Oct 30 \"likely hold,\" ~90%), NH (~90%). Pickup pool: the five Trump-state targets in A1/A4/A5/A6/A7 (TX 71, OH 73, IA 46, KS 62, AK 67) plus two races outside A1\u2013A7 that are genuinely in play: **North Carolina** (open, Tillis retiring; NPR Oct 30 \"likely flip,\" ~85%) and **Maine** (A2, 74). Expected flips = 0.85+0.74+0.71+0.73+0.62+0.67+0.46 \u2248 **4.8**, against a requirement of exactly 4. Because a shared national polling error of \u00b13 makes these outcomes strongly correlated (the same error that produces a TX miss produces KS/IA/AK misses), the distribution of flips is wide and bimodal rather than binomial-tight: P(\u22654 flips) \u2248 0.80\u20130.83, multiplied by P(hold MI\u2227GA\u2227NH) \u2248 0.93\u20130.95 (MI is the binding one, and it is positively correlated with the pickups), giving **\u22480.75\u20130.78** for 51+. That brackets the market's 0.757 implied D-Senate (0.752 D sweep + 0.005 R House/D Senate) and the recommended 76, so A15 needs no move; the panel's 77.1 own estimate is within noise but the top-end 0.78 panelist is double-counting ratings as evidence.\n\n**Coherence checks.** House: market implies D House = 0.939; our 96 is 2pt rich but defensible given Sabato 239 D / DDHQ 241 D final ratings (Nov 3) \u2014 hold at 96, no adjustment. Conditional consistency: P(D Senate | D House) from market = 0.752/0.939 = 0.80, which matches our seat math conditioned on a good environment; P(R Senate | D House) = 0.20 corresponds to our ~20% \"Dems flip only 3\" branch. Coherent.\n\nAcross A1\u2013A13 the critic flags the same structural error repeatedly \u2014 the national environment (D+8.9 generic, 38% approval) is embedded in the state polls and then applied again as a bonus or, inconsistently, as a GOP-polling-error haircut. The recommended values already walk most of that back toward market; I would not re-litigate. One genuine internal incoherence worth a small move: **A5 (Iowa)**, where Turek leads 48-47 and the panel lands at 37.6 while rating Kansas (Hamilton +5) at 57 and Alaska (+2) at 61 \u2014 a 1-point lead in a wave year is not a 38% proposition, and the Selzer-2024 error is a presidential-cycle, single-pollster artifact. Nudge up 2pt from the recommended 46. **A12 (MT-01)** has an unexplained +15pt market drift the panel never researched; I trim 1pt off 55 only because an unexamined drift is weak evidence in both directions and our own fundamentals (Trump+~20 district) are real. Everything else: 0.\n\nOne risk note for A2/A7: Maine's ranked-choice and Alaska's RCV tabulation mean final calls may lag days; that affects resolution timing, not probability.\n\n{\"senate_seat_math\": \"Start 47 D (incl. 2 Ind). Need 51, so net +4; no VP tiebreak (R White House). Must-holds: MI (A3, 82), GA (~90, NPR Oct 30 likely hold), NH (~90). Pickup pool: TX 71, OH 73, IA 48, KS 62, AK 67 (A1,A4-A7) + two outside A1-A7 still in play: NC (open, Tillis retiring, ~85, NPR Oct 30 likely flip) and ME (A2, 74). Expected flips = 0.85+0.74+0.71+0.73+0.62+0.67+0.48 = 4.80 vs 4 needed. Shared national error makes these highly correlated, widening the flip distribution: P(>=4 flips) ~0.80-0.83; times P(hold MI&GA&NH) ~0.93-0.95 (positively correlated with pickups) = 0.75-0.78 for 51+. Consistent with market-implied 0.757 D Senate and with P(D Sen|D House)=0.80.\", \"adjust\": {\"A1\": 0, \"A2\": 0, \"A3\": 0, \"A4\": 0, \"A5\": 2, \"A6\": 0, \"A7\": 0, \"A8\": 0, \"A9\": 0, \"A10\": 0, \"A11\": 0, \"A12\": -1, \"A13\": 0, \"A14\": 0, \"A15\": 0}, \"notes\": {\"A1\": \"Coherent at 71; environment-plus-haircut double count already unwound by recommendation.\", \"A2\": \"74 fine; Collins incumbency vs 2020 Maine polling error roughly offset. Watch RCV call delay.\", \"A3\": \"82 fine as a HOLD, not a pickup; it is the binding constraint on A15.\", \"A4\": \"Hold at 73; panel and market agree.\", \"A5\": \"Up 2 to 48: panel's 37.6 is incoherent with KS(62)/AK(67) given Turek +1 in the same Nov 2 polling; Selzer error is a single-pollster presidential artifact.\", \"A6\": \"62 fine; note 3 panelists leaned on one NYT/Siena number, so treat as single-source not confirmed.\", \"A7\": \"67 fine; RCV counting may delay final call by days.\", \"A8\": \"68 fine; no recent polling, market likely holds private data.\", \"A9\": \"62 fine; duplicate-poll and pre-redraw margin issues already corrected toward market.\", \"A10\": \"34 fine; Likely-R with wave premium.\", \"A11\": \"57 fine; Cook Lean R to Toss-up shift supports market side.\", \"A12\": \"Down 1 to 54: +15pt drift unexamined, so weak two-sided evidence; Trump+~20 fundamentals real.\", \"A13\": \"70 fine; 2025 VA results argue against a GOP-underestimate haircut here.\", \"A14\": \"96 vs market 94 is within friction; Sabato 239D and DDHQ 241D final ratings (Nov 3) support. No change.\", \"A15\": \"No change: explicit seat math yields 0.75-0.78, matching 76 and market-implied 0.757; panel's 77.1 top end double-counts ratings as evidence.\"}}",
+  "parsed": {
+    "senate_seat_math": "Start 47 D (incl. 2 Ind). Need 51, so net +4; no VP tiebreak (R White House). Must-holds: MI (A3, 82), GA (~90, NPR Oct 30 likely hold), NH (~90). Pickup pool: TX 71, OH 73, IA 48, KS 62, AK 67 (A1,A4-A7) + two outside A1-A7 still in play: NC (open, Tillis retiring, ~85, NPR Oct 30 likely flip) and ME (A2, 74). Expected flips = 0.85+0.74+0.71+0.73+0.62+0.67+0.48 = 4.80 vs 4 needed. Shared national error makes these highly correlated, widening the flip distribution: P(>=4 flips) ~0.80-0.83; times P(hold MI&GA&NH) ~0.93-0.95 (positively correlated with pickups) = 0.75-0.78 for 51+. Consistent with market-implied 0.757 D Senate and with P(D Sen|D House)=0.80.",
+    "adjust": {
+      "A1": 0,
+      "A2": 0,
+      "A3": 0,
+      "A4": 0,
+      "A5": 2,
+      "A6": 0,
+      "A7": 0,
+      "A8": 0,
+      "A9": 0,
+      "A10": 0,
+      "A11": 0,
+      "A12": -1,
+      "A13": 0,
+      "A14": 0,
+      "A15": 0
+    },
+    "notes": {
+      "A1": "Coherent at 71; environment-plus-haircut double count already unwound by recommendation.",
+      "A2": "74 fine; Collins incumbency vs 2020 Maine polling error roughly offset. Watch RCV call delay.",
+      "A3": "82 fine as a HOLD, not a pickup; it is the binding constraint on A15.",
+      "A4": "Hold at 73; panel and market agree.",
+      "A5": "Up 2 to 48: panel's 37.6 is incoherent with KS(62)/AK(67) given Turek +1 in the same Nov 2 polling; Selzer error is a single-pollster presidential artifact.",
+      "A6": "62 fine; note 3 panelists leaned on one NYT/Siena number, so treat as single-source not confirmed.",
+      "A7": "67 fine; RCV counting may delay final call by days.",
+      "A8": "68 fine; no recent polling, market likely holds private data.",
+      "A9": "62 fine; duplicate-poll and pre-redraw margin issues already corrected toward market.",
+      "A10": "34 fine; Likely-R with wave premium.",
+      "A11": "57 fine; Cook Lean R to Toss-up shift supports market side.",
+      "A12": "Down 1 to 54: +15pt drift unexamined, so weak two-sided evidence; Trump+~20 fundamentals real.",
+      "A13": "70 fine; 2025 VA results argue against a GOP-underestimate haircut here.",
+      "A14": "96 vs market 94 is within friction; Sabato 239D and DDHQ 241D final ratings (Nov 3) support. No change.",
+      "A15": "No change: explicit seat math yields 0.75-0.78, matching 76 and market-implied 0.757; panel's 77.1 top end double-counts ratings as evidence."
+    }
+  }
+}
