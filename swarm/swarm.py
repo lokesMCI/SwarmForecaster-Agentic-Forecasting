@@ -51,6 +51,9 @@ B_SHRINK = 0.8        # shrink Part B mixture medians toward zero (daily moves a
 RHO = 0.8             # House/Senate outcome correlation for scenario probabilities
 
 LOW = {"reasoning": {"effort": "low"}}
+# Keeps the Part A panel blind: in run 2 a stale Kalshi price reached the MI-04 panel through research.
+NO_ODDS = (" Do not report prediction-market or betting prices (Kalshi, Polymarket, PredictIt or similar); "
+           "the team reads those separately.")
 NOW = datetime.now(timezone.utc)
 CONTEXT = (f"Current time: {NOW:%A %d %B %Y, %H:%M} UTC. This is US Election Day for the 2026 midterms; "
            "polls close from 23:00 UTC on 3 Nov and most races are called overnight by AP and the networks, so "
@@ -100,17 +103,29 @@ def last_json(text):
     return None
 
 
-def call(qid, role, prompt, model, run, online=False, max_tokens=2500, retries=2, **kw):
+def call(qid, role, prompt, model, run, online=False, max_tokens=2500, retries=2, check=None, **kw):
+    """One traced model call. Retries on errors, empty replies and replies that fail `check` (usually a
+    reply cut off by max_tokens before its JSON line: reasoning tokens count against it, which hit the
+    DeepSeek critic); each retry doubles the token budget. Returns the last reply, even if it failed."""
+    out = ""
     for attempt in range(retries + 1):
         try:
             out = ftf.ask(qid, role, [{"role": "system", "content": CONTEXT}, {"role": "user", "content": prompt}],
-                          model, run, online=online, max_tokens=max_tokens, extra_body=dict(LOW), **kw)
-            if out and out.strip():
+                          model, run, online=online, max_tokens=max_tokens, extra_body=dict(LOW), **kw) or ""
+            if out.strip() and (check is None or check(out)):
                 return out
+            print(f"  {qid} {role} {model}: reply unusable (empty or no valid JSON), retrying")
         except Exception as e:  # noqa: BLE001
             print(f"  {qid} {role} {model} failed: {e}")
-        time.sleep(3 * (attempt + 1))
-    return ""
+        if attempt < retries:
+            max_tokens = min(2 * max_tokens, 12000)
+            time.sleep(3 * (attempt + 1))
+    return out
+
+
+def has_keys(*keys):
+    """check= for call(): the reply's last JSON object has every key."""
+    return lambda txt: all(k in (last_json(txt) or {}) for k in keys)
 
 
 class Swarm:
@@ -135,7 +150,14 @@ class Swarm:
                 self.state[qid]["market"] = snaps[qid]
             else:
                 self.state[qid]["facts"] = data_desk.market_facts(qid)
-        self.save("data_desk.json", {"snapshots": snaps, "scenarios": self.scen,
+        method = {"git_commit": ftf.GIT_COMMIT, "git_dirty": ftf.GIT_DIRTY, "started_utc": NOW.isoformat(),
+                  "models": {"scout": SCOUT, "panel": PANEL, "critic": CRITIC, "supervisor": SUPERVISOR,
+                             "final": FINAL},
+                  "constants": {"EXTREMIZE": EXTREMIZE, "W_IDIO": W_IDIO, "W_SHARED": W_SHARED,
+                                "DRIFT_SCALE": DRIFT_SCALE, "CAP_PTS": CAP_PTS, "B_SHRINK": B_SHRINK, "RHO": RHO}}
+        if ftf.GIT_DIRTY:
+            print("WARNING: uncommitted changes; every call in this run is tagged git_dirty. Commit first.")
+        self.save("data_desk.json", {"method": method, "snapshots": snaps, "scenarios": self.scen,
                                      "facts": {q: s.get("facts") for q, s in self.state.items()}})
         print("scenario probabilities from chamber markets:", self.scen)
 
@@ -144,7 +166,7 @@ class Swarm:
         def angle(item):
             name, brief = item
             return name, call("general", "research", brief + "\nReturn a dense, dated, sourced brief "
-                              "(bullet points, each with date and source URL), max 450 words.", SCOUT,
+                              "(bullet points, each with date and source URL), max 450 words." + NO_ODDS, SCOUT,
                               self.run, online=True, max_tokens=3000)
         with cf.ThreadPoolExecutor(5) as ex:
             self.briefs = dict(ex.map(angle, ANGLES.items()))
@@ -157,7 +179,7 @@ class Swarm:
                        "(and any independent who matters), all polls from the last 3 weeks with dates and "
                        "pollsters, ratings from Cook/Sabato/Inside Elections, fundraising, district/state "
                        "partisan lean and past results, and any Election Day news. Max 400 words, bullet "
-                       "points, each with a date and source URL.")
+                       "points, each with a date and source URL." + NO_ODDS)
             else:
                 f = self.state[qid]["facts"]
                 ask = (f"Research what will drive '{text}' from the 3 Nov 2026 close to the 4 Nov 2026 close "
@@ -196,12 +218,23 @@ class Swarm:
             "{\"moves\": {\"D sweep\": x, \"D House / R Senate\": x, \"R sweep\": x, \"R House / D Senate\": x}, "
             "\"key_reasons\": \"...\"}")
 
+    def panel_ok(self, qid):
+        """check= for a panel reply: a numeric p_dem (A), or a numeric move for every scenario (B)."""
+        def ok(txt):
+            js = last_json(txt) or {}
+            if qid.startswith("A"):
+                return isinstance(js.get("p_dem"), (int, float))
+            moves = js.get("moves") or {}
+            return all(isinstance(moves.get(k), (int, float)) for k in self.scen)
+        return ok
+
     def panel(self):
         jobs = [(qid, m) for qid in self.qids for m in PANEL]
 
         def one(job):
             qid, m = job
-            txt = call(qid, "forecast", self.panel_prompt(qid), m, self.run, max_tokens=3000, temperature=0.2)
+            txt = call(qid, "forecast", self.panel_prompt(qid), m, self.run, max_tokens=3000, temperature=0.2,
+                       check=self.panel_ok(qid))
             return qid, m, txt, last_json(txt)
         with cf.ThreadPoolExecutor(12) as ex:
             for qid, m, txt, js in ex.map(one, jobs):
@@ -221,7 +254,9 @@ class Swarm:
                       "the market may not have priced. Max 200 words. End with ONE JSON line: "
                       "{\"direction\": \"toward_market|away_from_market|hold\", \"confidence\": \"low|medium|high\", "
                       "\"issues\": \"...\"}")
-            return qid, call(qid, "critique", prompt, CRITIC, self.run, max_tokens=2500)
+            # 2500 tokens cut off 6 of 25 DeepSeek critiques in run 2 before their JSON line
+            return qid, call(qid, "critique", prompt, CRITIC, self.run, max_tokens=6000,
+                             check=has_keys("direction", "issues"))
         with cf.ThreadPoolExecutor(10) as ex:
             for qid, txt in ex.map(one, self.qids):
                 self.state[qid]["critic"] = {"text": txt[-1500:], "parsed": last_json(txt)}
@@ -301,7 +336,7 @@ class Swarm:
             prompt = (f"{task}\n\nShared briefs:\n" + "\n".join(f"### {k}\n{v[:1800]}" for k, v in self.briefs.items()) +
                       f"\n\nSwarm state:\n{json.dumps(rows, indent=1)}\n\nEnd with ONE JSON line: {schema}")
             txt = call("general", "aggregate", prompt, SUPERVISOR, self.run,
-                       max_tokens=7000 if part == "A" else 5000)
+                       max_tokens=7000 if part == "A" else 5000, check=has_keys("adjust", "notes"))
             sup = last_json(txt) or {}
             for q in qs:
                 self.state[q]["supervisor"] = {"adjust": (sup.get("adjust") or {}).get(q, 0),
@@ -389,7 +424,9 @@ class Swarm:
                       "named error in the record (a wrong fact or a miscalculation), never to re-weigh or split the "
                       "difference. Write 2-4 sentences of reasoning, then end with exactly "
                       f"one JSON line and nothing after it:\n{line}")
-            return qid, call(qid, "final", prompt, FINAL, self.run, max_tokens=1500, temperature=0)
+            # a final without a readable answer would leave the run incomplete, so it is retried too
+            return qid, call(qid, "final", prompt, FINAL, self.run, max_tokens=2000, temperature=0,
+                             check=lambda txt: final_answer(txt, qid) is not None)
         with cf.ThreadPoolExecutor(10) as ex:
             for qid, txt in ex.map(one, self.qids):
                 self.state[qid]["final"] = {"text": txt, "parsed": ftf.parse_final(txt, qid)}
@@ -408,7 +445,33 @@ class Swarm:
         print("\nqid  market  own  recommended  final")
         for r in rows:
             print("  ".join(str(x) for x in r))
+        missing = [q for q, *_, ans in rows if ans is None]
+        overridden = [f"{q} ({rec} -> {ans})" for q, _, _, rec, ans in rows
+                      if ans is not None and rec is not None and abs(float(ans) - float(rec)) > 1e-9]
+        if missing:
+            print(f"\nINCOMPLETE: no final answer for {', '.join(missing)}. Rerun them with --questions under "
+                  f"the SAME --run label before submitting; never fill them in by hand.")
+        if overridden:
+            print(f"Final call departed from the method for: {', '.join(overridden)}. Check its stated error.")
         print(f"done in {time.time() - t0:.0f}s; credit left:"); ftf.credit_left()
+
+
+def final_answer(txt, qid):
+    """The numeric answer in a final reply's JSON line, or None (quietly: ftf.ask already warns)."""
+    lines = [l.strip().strip("`").strip() for l in (txt or "").splitlines()]
+    lines = [l for l in lines if l and l.lower() != "json"]
+    try:
+        value = json.loads(lines[-1]).get("answer") if lines else None
+    except (json.JSONDecodeError, AttributeError):
+        return None
+    if isinstance(value, str):
+        try:
+            value = float(value)
+        except ValueError:
+            return None
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+        return None
+    return value
 
 
 def mixture_median(probs, moves, sd):
