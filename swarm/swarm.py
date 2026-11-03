@@ -27,7 +27,7 @@ ROOT = Path(__file__).resolve().parent.parent
 for line in (ROOT / ".env").read_text().splitlines():  # load team settings
     if "=" in line and not line.startswith("#"):
         k, v = line.split("=", 1)
-        os.environ.setdefault(k.strip(), v.strip())
+        os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))  # KEY="value" is common
 sys.path.insert(0, str(ROOT / "ai_only")); sys.path.insert(0, str(ROOT / "swarm"))
 import ftf  # noqa: E402
 import data_desk  # noqa: E402
@@ -229,9 +229,9 @@ class Swarm:
     # ---- stage 5 (part): code aggregation ----------------------------------------------
     def aggregate_a(self, qid):
         s = self.state[qid]
-        ps = [clip(float(p["parsed"]["p_dem"])) for p in s["panel"]
+        ps = [float(p["parsed"]["p_dem"]) for p in s["panel"]
               if p["parsed"] and isinstance(p["parsed"].get("p_dem"), (int, float))]
-        ps = [p / 100 if p > 1 else p for p in ps]
+        ps = [clip(p / 100 if p > 1 else p) for p in ps]  # a reply of 62 means 62%, not 0.99
         if not ps:
             return None
         own = inv(EXTREMIZE * median(logit(p) for p in ps))
@@ -344,6 +344,8 @@ class Swarm:
             damp = 1 / (1 + drift_1d / DRIFT_SCALE)
             x = logit(m) + damp * (W_SHARED * shared + W_IDIO * (d[q] - shared))
             blend = min(max(inv(x), m - CAP_PTS / 100), m + CAP_PTS / 100)
+            if d[q] * (blend - m) < 0:  # never cross to the other side of the market from our own view
+                blend = m
             agg.update(shared_gap_logit=round(shared, 3), race_gap_logit=round(d[q] - shared, 3),
                        drift_1d=round(drift_1d, 3), weight_damping=round(damp, 2),
                        recommended=int(round(100 * clip(blend))))
@@ -382,8 +384,10 @@ class Swarm:
             else:
                 payload["facts"] = s["facts"]
             prompt = (f"You make the final call for {qid}: {s['question']}.\nSwarm record:\n{json.dumps(payload, indent=1)}\n\n"
-                      f"{rule}\nThe recommended answer from this method is {agg['recommended']}. Use it unless the record "
-                      "contains a concrete error (state it). Write 2-4 sentences of reasoning, then end with exactly "
+                      f"{rule}\nThe recommended answer from this method is {agg['recommended']}. The method already weighs "
+                      "the panel, critic, supervisor and market, so use it as the answer. Deviate only for a concrete, "
+                      "named error in the record (a wrong fact or a miscalculation), never to re-weigh or split the "
+                      "difference. Write 2-4 sentences of reasoning, then end with exactly "
                       f"one JSON line and nothing after it:\n{line}")
             return qid, call(qid, "final", prompt, FINAL, self.run, max_tokens=1500, temperature=0)
         with cf.ThreadPoolExecutor(10) as ex:
