@@ -1,0 +1,55 @@
+{
+  "team": "team-dsl",
+  "track": "ai-only",
+  "run": "team-dsl-run-3",
+  "answers": {
+    "A1": 73,
+    "A2": 72,
+    "A3": 82,
+    "A4": 72,
+    "A5": 50,
+    "A6": 64,
+    "A7": 69,
+    "A8": 72,
+    "A9": 62,
+    "A10": 39,
+    "A11": 60,
+    "A12": 59,
+    "A13": 73,
+    "A14": 95,
+    "A15": 68,
+    "B1": 0.28,
+    "B2": -0.13,
+    "B3": -0.08,
+    "B4": -1.9,
+    "B5": -1.2,
+    "B6": -0.7,
+    "B7": -0.8,
+    "B8": 0.1,
+    "B9": 0.12,
+    "B10": 0.15
+  },
+  "team_name": "DarkKnight",
+  "helper_version": "2026-10-31",
+  "run_summary": {
+    "calls": 158,
+    "calls_by_role": {
+      "research": 30,
+      "forecast": 75,
+      "critique": 26,
+      "aggregate": 2,
+      "final": 25
+    },
+    "models": [
+      "anthropic/claude-opus-5",
+      "anthropic/claude-sonnet-5",
+      "deepseek/deepseek-v4-pro",
+      "google/gemini-3.8-flash",
+      "google/gemini-4-argon",
+      "openai/gpt-6-sol"
+    ],
+    "first_call": "2026-11-03T21:21:05+00:00",
+    "last_call": "2026-11-03T21:31:27+00:00"
+  },
+  "warnings": []
+}

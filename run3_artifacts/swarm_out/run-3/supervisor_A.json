@@ -1,0 +1,40 @@
+{
+  "text": "**Senate seat arithmetic (explicit)**\n\n- Democratic baseline: 47 seats (incl. 2 independents), of which the contested defenses this cycle are MI, NH, GA, MN. NH/GA/MN are not in A1\u2013A7; briefs and ratings (older than one week for some, e.g. Cook MI 14 Oct) treat them as Likely/Lean D, so model each ~0.93\u20130.95. MI (A3) at 0.82 is the weak defensive link.\n- Needed: 51 seats = net +4, i.e. 4 GOP-held flips while holding all four defenses.\n- Pickup pool from our own recommended numbers: TX 0.70, ME 0.71, OH-special 0.70, AK 0.66, KS 0.62, IA 0.48 \u2192 expected 3.87 flips from A1\u2013A7 alone.\n- **Races in play outside A1\u2013A7:** North Carolina (the briefs' \"foundational pickup,\" plausibly ~0.85), plus reach targets Nebraska (Osborn, I), South Carolina, Florida special, and the Democratic defenses NH/GA/MN.\n- Including NC (~0.85), expected flips \u2248 4.7, median outcome 5 flips \u2014 i.e. one flip *above* the 4 needed, with Osborn/SC/FL as free options.\n- Correlation cuts both ways: a uniform GOP-ward polling error of ~3\u20134 pts (the critics' core worry) knocks out the 0.62\u20130.71 cluster simultaneously and also endangers MI, so the distribution is bimodal rather than binomial-smooth. Treating the races as one shared error term, P(\u22654 flips AND holding MI/NH/GA/MN) comes out around **0.68\u20130.75**, not 0.41.\n\n**Verdict:** A15's own_estimate of 41.3 is flatly incoherent with A1\u2013A7 (which imply ~4.7 expected flips) and with A14 at 95. The A15 critic's \"away_from_market/structural barriers\" case is already fully priced inside the individual race estimates \u2014 applying it again at the chamber level double-discounts the same GOP-polling-error argument. Market scenario split (D Senate 0.742 = 0.738 + 0.004; D House 0.941) is internally consistent and consistent with our A14. Move A15 to ~70 (recommended 68 is defensible; +2).\n\nOther flags: A3 is pivotal for Senate control, and an 11-pt NYT/Siena lead with no fresh contrary data supports a nudge up (+1). A1's critic direction conflicts with a recommended 70 that sits *above* own_estimate 60 \u2014 the recommendation, not the critic, carries; leave at 70 for seat-math coherence. House district questions (A8\u2013A13) sit below their markets but are individually consistent with a D+24 environment plus red-district lean; no change, noting A13's panel self-contradiction was already corrected toward market.\n\n{\"senate_seat_math\": \"Base 47 D (incl. 2 I); defenses MI 0.82 (A3), NH/GA/MN ~0.93-0.95 (not in A1-A7). Need net +4 = 51. Expected flips from A1-A7: TX 0.70 + ME 0.71 + OH 0.70 + AK 0.66 + KS 0.62 + IA 0.48 = 3.87; plus NC (in play, outside A1-A7, ~0.85) = 4.72 expected, median 5. Other live races outside A1-A7: NE (Osborn), SC, FL-special, plus D defenses NH/GA/MN. With a shared national polling error (bimodal, not binomial), P(>=4 flips and hold MI/NH/GA/MN) ~= 0.68-0.75; own_estimate 41.3 is incoherent and double-counts the GOP-poll-error discount already in A1-A7.\", \"adjust\": {\"A1\": 0, \"A2\": 0, \"A3\": 1, \"A4\": 0, \"A5\": 0, \"A6\": 0, \"A7\": 0, \"A8\": 0, \"A9\": 0, \"A10\": 0, \"A11\": 0, \"A12\": 0, \"A13\": 0, \"A14\": 0, \"A15\": 2}, \"notes\": {\"A1\": \"Critic direction conflicts with recommended 70 > own 60; keep 70 for seat-math coherence.\", \"A2\": \"Coherent; hold.\", \"A3\": \"Pivotal defense; 11-pt Siena lead with no contrary data supports small nudge up to ~83.\", \"A4\": \"Fine at 70.\", \"A5\": \"Genuine toss-up; hold 48.\", \"A6\": \"Hold 62.\", \"A7\": \"Hold 66; RCV count may take days.\", \"A8\": \"Below market but consistent with Trump+11 baseline under D+9 wave; hold.\", \"A9\": \"Hold 58.\", \"A10\": \"Hold 36.\", \"A11\": \"Hold 57.\", \"A12\": \"Hold 56.\", \"A13\": \"Panel inconsistency already corrected toward market; hold 68.\", \"A14\": \"Coherent with D+9 ballot and Sabato 239 D; hold 95.\", \"A15\": \"Own 41.3 incoherent with A1-A7 seat math (~4.7 expected flips) and with A14; critic double-counts poll-error discount. Move to ~70.\"}}",
+  "parsed": {
+    "senate_seat_math": "Base 47 D (incl. 2 I); defenses MI 0.82 (A3), NH/GA/MN ~0.93-0.95 (not in A1-A7). Need net +4 = 51. Expected flips from A1-A7: TX 0.70 + ME 0.71 + OH 0.70 + AK 0.66 + KS 0.62 + IA 0.48 = 3.87; plus NC (in play, outside A1-A7, ~0.85) = 4.72 expected, median 5. Other live races outside A1-A7: NE (Osborn), SC, FL-special, plus D defenses NH/GA/MN. With a shared national polling error (bimodal, not binomial), P(>=4 flips and hold MI/NH/GA/MN) ~= 0.68-0.75; own_estimate 41.3 is incoherent and double-counts the GOP-poll-error discount already in A1-A7.",
+    "adjust": {
+      "A1": 0,
+      "A2": 0,
+      "A3": 1,
+      "A4": 0,
+      "A5": 0,
+      "A6": 0,
+      "A7": 0,
+      "A8": 0,
+      "A9": 0,
+      "A10": 0,
+      "A11": 0,
+      "A12": 0,
+      "A13": 0,
+      "A14": 0,
+      "A15": 2
+    },
+    "notes": {
+      "A1": "Critic direction conflicts with recommended 70 > own 60; keep 70 for seat-math coherence.",
+      "A2": "Coherent; hold.",
+      "A3": "Pivotal defense; 11-pt Siena lead with no contrary data supports small nudge up to ~83.",
+      "A4": "Fine at 70.",
+      "A5": "Genuine toss-up; hold 48.",
+      "A6": "Hold 62.",
+      "A7": "Hold 66; RCV count may take days.",
+      "A8": "Below market but consistent with Trump+11 baseline under D+9 wave; hold.",
+      "A9": "Hold 58.",
+      "A10": "Hold 36.",
+      "A11": "Hold 57.",
+      "A12": "Hold 56.",
+      "A13": "Panel inconsistency already corrected toward market; hold 68.",
+      "A14": "Coherent with D+9 ballot and Sabato 239 D; hold 95.",
+      "A15": "Own 41.3 incoherent with A1-A7 seat math (~4.7 expected flips) and with A14; critic double-counts poll-error discount. Move to ~70."
+    }
+  }
+}

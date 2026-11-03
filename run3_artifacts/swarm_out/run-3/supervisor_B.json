@@ -1,0 +1,29 @@
+{
+  "text": "## Cross-asset consistency review\n\n**1. Equity complex is internally contradictory.** SPY +0.28% but IWM \u22120.41% and NVDA \u22120.24%, with VIX \u22121.9 (a sizeable vol crush, ~3x a typical daily VIX move of 0.64). A post-event vol crush plus an up S&P is a risk-on configuration; high-beta (IWM, NVDA) should not be negative in that state. The sector-rotation story (small-cap/energy/healthcare headwinds under a D House) is real but is a *relative* argument, not an absolute one, and the 2018 analogue (IWM +1.8% the day after) cuts the other way. Recommend lifting IWM to roughly flat/slightly positive and NVDA to roughly flat.\n\n**2. VIX magnitude.** \u22121.9 is defensible for a resolved, largely pre-priced election, but it is on the aggressive side given Maine/Alaska RCV counts can leave Senate control unresolved for days and 4 Nov carries data/earnings noise. It is consistent in *sign* with SPY up; leave it, but note it already embeds a fuller resolution than the equity numbers do.\n\n**3. Curve.** 2y \u22122.0 / 10y \u22120.7 is a bull steepener. The steepening direction fits gridlock + fiscal-friction-at-the-long-end, but the *level* shift down in the 2y sits awkwardly with a risk-on equity/VIX print (no FOMC on 4 Nov; Dec 8\u20139 is the next meeting). Small upward nudge to the 2y.\n\n**4. Gilts vs Treasuries.** Gilts \u22121.1 bp is larger in magnitude than the 10y Treasury \u22120.7 bp, i.e. a beta >1 to US rates on a US-specific catalyst \u2014 inconsistent with \"partial follow.\" With the BoE decision landing 5 Nov (not 4 Nov), gilts should be dampened, not amplified. Nudge toward \u22120.6/\u22120.7.\n\n**5. Gold vs yields.** +0.1% with yields modestly lower and vol collapsing \u2014 small and directionally coherent (real-yield channel offset by safe-haven unwind). No change.\n\n**6. Oil vs equities.** +0.12% with equities up slightly is consistent; well inside the 1.87% typical daily move. No change. Nat gas +0.15% is essentially noise, consistent with oil. No change.\n\nNet effect of adjustments: one coherent mild risk-on/event-resolution state (equities flat-to-up, vol down, mild bull steepening, gilts following partially, commodities ~flat) rather than the current mixed picture.\n\n{\"adjust\": {\"B1\": 0, \"B2\": 0.35, \"B3\": 0.2, \"B4\": 0, \"B5\": 1.0, \"B6\": 0, \"B7\": 0.4, \"B8\": 0, \"B9\": 0, \"B10\": 0}, \"notes\": {\"B1\": \"Anchor of the risk-on state; +0.28% is modest vs 0.45% typical daily move and consistent with a VIX crush. Hold.\", \"B2\": \"Raise to ~-0.06%: IWM cannot be down 0.4% while SPY is up and VIX falls 1.9 pts; 2018 split-Congress analogue was IWM +1.8%. Sector headwinds are relative, not absolute.\", \"B3\": \"Raise to ~-0.04%: high-beta megacap should not be negative in a risk-on/vol-crush state; critic already flags the -2.2% panel leg as detached from base rates.\", \"B4\": \"-1.9 is ~3x typical daily move but defensible for event resolution; keep as the risk-on anchor. Note RCV delays in ME/AK cap how much vol can crush.\", \"B5\": \"Raise to ~-1.0 bp: a 2 bp front-end rally conflicts with equities up/VIX down and no FOMC until 8-9 Dec; keeps the bull steepener but smaller.\", \"B6\": \"-0.7 bp vs 2y -1.0 bp preserves modest steepening consistent with long-end fiscal friction under divided government. Hold.\", \"B7\": \"Raise to ~-0.7 bp: gilt beta to a US-specific catalyst must be <1 vs the 10y Treasury's -0.7 bp; BoE lands 5 Nov, not 4 Nov, so no extra dovish impulse on the day.\", \"B8\": \"+0.1% coherent with slightly lower yields offset by safe-haven unwind; well inside 0.67% typical move. Hold.\", \"B9\": \"+0.12% consistent with mildly positive equities and no oil-specific catalyst; far inside 1.87% typical move. Hold.\", \"B10\": \"+0.15% is noise-level and directionally consistent with oil; data conflict on the 3 Nov close ($2.895 vs $2.905) is immaterial at this magnitude. Hold.\"}}",
+  "parsed": {
+    "adjust": {
+      "B1": 0,
+      "B2": 0.35,
+      "B3": 0.2,
+      "B4": 0,
+      "B5": 1.0,
+      "B6": 0,
+      "B7": 0.4,
+      "B8": 0,
+      "B9": 0,
+      "B10": 0
+    },
+    "notes": {
+      "B1": "Anchor of the risk-on state; +0.28% is modest vs 0.45% typical daily move and consistent with a VIX crush. Hold.",
+      "B2": "Raise to ~-0.06%: IWM cannot be down 0.4% while SPY is up and VIX falls 1.9 pts; 2018 split-Congress analogue was IWM +1.8%. Sector headwinds are relative, not absolute.",
+      "B3": "Raise to ~-0.04%: high-beta megacap should not be negative in a risk-on/vol-crush state; critic already flags the -2.2% panel leg as detached from base rates.",
+      "B4": "-1.9 is ~3x typical daily move but defensible for event resolution; keep as the risk-on anchor. Note RCV delays in ME/AK cap how much vol can crush.",
+      "B5": "Raise to ~-1.0 bp: a 2 bp front-end rally conflicts with equities up/VIX down and no FOMC until 8-9 Dec; keeps the bull steepener but smaller.",
+      "B6": "-0.7 bp vs 2y -1.0 bp preserves modest steepening consistent with long-end fiscal friction under divided government. Hold.",
+      "B7": "Raise to ~-0.7 bp: gilt beta to a US-specific catalyst must be <1 vs the 10y Treasury's -0.7 bp; BoE lands 5 Nov, not 4 Nov, so no extra dovish impulse on the day.",
+      "B8": "+0.1% coherent with slightly lower yields offset by safe-haven unwind; well inside 0.67% typical move. Hold.",
+      "B9": "+0.12% consistent with mildly positive equities and no oil-specific catalyst; far inside 1.87% typical move. Hold.",
+      "B10": "+0.15% is noise-level and directionally consistent with oil; data conflict on the 3 Nov close ($2.895 vs $2.905) is immaterial at this magnitude. Hold."
+    }
+  }
+}

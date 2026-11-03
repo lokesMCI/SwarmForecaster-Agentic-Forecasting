@@ -4,7 +4,7 @@
 
 This document explains how the swarm reaches each of its 25 answers (A1–A15 and B1–B10): what evidence it uses, who checks it, and what limits stop any one model from pushing an answer too far. The short README is in `README.md`. This file is the detailed version.
 
-The worked numbers come from **run 2 (3 Nov 2026, about 18:53 GMT)**. The scored run is the last one before 22:00 GMT, so its numbers will differ slightly as the markets move. The method doesn't change.
+**Final submitted run: `team-dsl-run-3`** (3 Nov 2026, 21:20–21:31 GMT), submitted at 21:31:53 GMT. All numbers in section 4 come from that run. Earlier runs (1 and 2) are explained in section 9.
 
 ---
 
@@ -51,7 +51,7 @@ Research on LLM forecasting finds that models alone trail liquid markets, but a 
 
 Every call goes through `ftf.ask()` with a role, so the run log shows every step. Every stage's output is written to `swarm_out/run-<n>/` (`data_desk.json`, `briefs.json`, `supervisor_A.json`, `supervisor_B.json`, `state.json`).
 
-A full run is about 165 model calls, takes about 5½ minutes and costs about $3.20.
+Run 3 made 158 model calls, took about 10½ minutes and cost $2.79.
 
 ---
 
@@ -64,11 +64,11 @@ For every Part A question:
 - **Venue gap** (Kalshi minus Polymarket), **Kalshi spread** (liquidity) and **7-day drift**, so later stages know whether the market has just moved on fresh news.
 - **Daily mids** for the past 8 days, from which the 1-day drift is computed.
 
-Across Part A, it also builds **four control scenarios** from the House (A14) and Senate (A15) control markets, using a Gaussian copula with correlation ρ = 0.8. The two chambers move together in a wave, so treating them as independent would be wrong. Run 2 gave:
+Across Part A, it also builds **four control scenarios** from the House (A14) and Senate (A15) control markets, using a Gaussian copula with correlation ρ = 0.8. The two chambers move together in a wave, so treating them as independent would be wrong. Run 3 gave:
 
 | D sweep | D House / R Senate | R sweep | R House / D Senate |
 |---|---|---|---|
-| 72.3% | 21.3% | 5.9% | 0.5% |
+| 73.8% | 20.3% | 5.4% | 0.4% |
 
 For every Part B question:
 - The latest closes (live, falling back to the data pack).
@@ -110,7 +110,7 @@ Claude Opus 5 runs twice per run, once over **all** of Part A and once over **al
 
 1. **Own estimate** = the median of the three panellists in log-odds, **extremized ×1.25**. LLM forecasts hedge toward 50%, and this is the standard correction. Then add the supervisor's bounded adjustment.
 2. **Split our disagreement with the market into two parts.**
-   - **Shared part**: the median gap across all races. The blind panel leans the same way in almost every race (in run 2 it sat below the market in 13 of 15), and that's a national-level bet. The House and Senate control markets aggregate the national picture better than we do, so it gets a **small weight (0.10)**.
+   - **Shared part**: the median gap across all races. The blind panel leans the same way in almost every race (in runs 2 and 3 it sat below the market in most of the 15), and that's a national-level bet. The House and Senate control markets aggregate the national picture better than we do, so it gets a **small weight (0.10)**.
    - **Race-specific part**: this race's gap minus the shared gap. This is where race-level research can genuinely add information, so it gets a **larger weight (0.33)**.
 3. **Respect fresh market moves.** Both weights shrink by `1 / (1 + |1-day drift| / 0.05)`. A market that moved 5 points in a day has fresh information, so our weight is halved.
 4. **Hard cap**: never more than **6 points** from the market.
@@ -128,90 +128,89 @@ Claude Sonnet 5 sees the whole record for the question: the panel, the critic, t
 
 ---
 
-## 4. How each question is answered
+## 4. How each question is answered (final run 3)
 
-The tables show run 2's numbers.
+These numbers are from **run 3, the submitted run** (`team-dsl-run-3`). Its market snapshot was taken at about 21:20 GMT, after the US close. Control scenarios from the chamber markets: D sweep 73.8%, D House / R Senate 20.3%, R sweep 5.4%, R House / D Senate 0.4%.
+
 - **Panel** is the three blind forecasts (Sonnet 5, GPT-6 Sol, Gemini 4 Argon).
 - **Own** is our own estimate after extremizing and the supervisor's adjustment.
-- **Method** is stage 5's answer (shown with the no-crossing rule applied).
-- **Final** is what run 2's final call submitted, which in some races differs from the method. This is the problem the stricter final prompt now fixes (see section 6).
+- **Method** is stage 5's answer. **Final** is the submitted answer.
 
-### Part A: Senate races (A1–A7)
+In run 3, **every final call kept the method's answer**. The bullets quote each question's critic and supervisor. Numbers inside a supervisor note (such as "hold 62") refer to the recommendation it reviewed, before its bounded adjustment and the final market blend.
 
-| Q | Race | Market (Kalshi / Poly) | Panel | Own | Method | Final (run 2) |
-|---|---|---|---|---|---|---|
-| A1 | Texas | 72.0 (71.5 / 72.5) | 40, 63, 57 | 56.7 | 71 | 71 |
-| A2 | Maine | 69.0 (67.5 / 70.5) | 55, 62, 56 | 55.5 | 69 | 63 |
-| A3 | Michigan | 77.0 (76.5 / 77.5) | 72, 82, 76 | 80.9 | 80 | 80 |
-| A4 | Ohio (special) | 72.0 (71.5 / 72.5) | 33, 38, 34 | 27.4 | 66 | 68 |
-| A5 | Iowa | 50.0 (49.5 / 50.5) | 45, 46, 46 | 45.0 | 50 | 47 |
-| A6 | Kansas | 63.0 (61.5 / 64.5) | 38, 53, 48 | 45.5 | 61 | 61 |
-| A7 | Alaska | 70.5 (70.5 / 70.5) | 45, 57, 54 | 55.0 | 69 | 69 |
+### Part A: Senate races
 
-What makes each one different:
+| Q | Race | Market (Kalshi / Poly) | Panel | Own | Weight damping | Method | Final |
+|---|---|---|---|---|---|---|---|
+| A1 | Texas Senate | 75.0 (74.5 / 75.5) | 38, 67, 58 | 60.0 | 0.71 | 73 | **73** |
+| A2 | Maine Senate | 70.0 (69.5 / 70.5) | 72, 70, 62 | 74.3 | 0.67 | 72 | **72** |
+| A3 | Michigan Senate | 75.5 (75.5 / 75.5) | 90, 91, 82 | 95.0 | 0.62 | 82 | **82** |
+| A4 | Ohio Senate (special) | 72.5 (72.5 / 72.5) | 55, 62, 62 | 64.8 | 0.71 | 72 | **72** |
+| A5 | Iowa Senate | 50.0 (49.5 / 50.5) | 42, 48, 46 | 45.0 | 0.83 | 50 | **50** |
+| A6 | Kansas Senate | 64.5 (64.5 / 64.5) | 55, 65, 54 | 56.2 | 0.67 | 64 | **64** |
+| A7 | Alaska Senate | 69.5 (68.5 / 70.5) | 57, 65, 58 | 60.0 | 0.71 | 69 | **69** |
 
-- **A1 Texas.** The widest panel split in the Senate set (40 to 63). The critic argued with high confidence that the market overweights narrow polling leads in an R+14 state with a history of polls understating Republicans. The supervisor took off 2 points for correlated red-state error, keeping A1 consistent with A15. Because most of the gap is the shared national bet, the method stays close to the market (71).
-- **A2 Maine.** A late-substituted Democratic nominee against Susan Collins, who has a record of beating her polls. The critic flagged that every poll was more than a week old and that the national mood was double counted. The market's 7-day drift (+7.5 points) cut our weight to 0.59 of normal, because the market had moved on news our scouts lacked. The method returns the market (69). Run 2's final went to 63 by splitting the difference, which the stricter final prompt now forbids.
-- **A3 Michigan.** The one race where the blind panel sat **above** the market (own 80.9 against 77). The supervisor confirmed that a 3 Nov cross-endorsement was a real, dated fact. The method moves up 3 points to 80, in the direction of our own evidence.
-- **A4 Ohio special.** The largest disagreement in Part A: the panel said 33–38% in an R+10 state, against a market of 72%. The critic warned that the panel leaned on stale ratings and ignored the effect of a wave on an appointed incumbent. The supervisor called it the weakest link in the Senate ladder. The method moves 6 points, the cap, to 66. The no-crossing rule and the cap stop a big model bet against a liquid market.
-- **A5 Iowa.** A true toss-up market (50). The panel was unanimous at 45–46. Before the no-crossing fix, the shared-gap arithmetic pushed the answer **above** the market to 52, against our own view. The fix holds it at the market (50), and the run 2 final correctly spotted the original problem. The critic also caught an invented "D+8.5 wave" figure and a misread fundraising edge.
-- **A6 Kansas.** No Democrat has won a Kansas Senate race since 1932. The critic made that base-rate case, and the supervisor took off 2 points ("tied polls do not imply 63%"). The 7-day drift (+22 points) is large, so the method moves only 2 points below the market, to 61.
-- **A7 Alaska.** Ranked-choice voting, and both venues exactly agree (70.5). The supervisor noted that the count may take days; questions not called by 9 Nov are dropped. The method sits 1.5 points below the market, at 69.
+- **A1 Texas Senate.** Critic (away_from_market, high confidence): Market likely underappreciates Texas's strong Republican baseline, history of polling misses underestimating GOP turnout, and the absence of concrete data for a D+9 wave. Panel's caution better reflects structural partisan lean. Supervisor (+0): Critic direction conflicts with recommended 70 > own 60; keep 70 for seat-math coherence.
+- **A2 Maine Senate.** Critic (hold, medium confidence): Panel average is near market; Gemini is more convincing than the higher forecasts. Key unsupported claims: D+9 generic ballot, Jackson late entry. Single-incumbent overperformance may be overweighted; polling average is only about +1. Supervisor (+0): Coherent; hold.
+- **A3 Michigan Senate.** Critic (toward_market, high confidence): Panel systematically double-counts overlapping signals: Cook/Inside Elections ratings are downstream of the same polls already cited. Historical 'every Senate race since 1994' is not independent of recent swing-state closeness (Slotkin won by 0.3%, Trump by… Supervisor (+1): Pivotal defense; 11-pt Siena lead with no contrary data supports small nudge up to ~83.
+- **A4 Ohio Senate (special).** Critic (away_from_market, medium confidence): Unsupported national-wave claims; double counting of polls/ratings; market underweights Ohio GOP baseline and poll error; gap not explained by unpriced evidence. Supervisor (+0): Fine at 70.
+- **A5 Iowa Senate.** Critic (toward_market, medium confidence): Panel average (0.45) underweights tied polls and treats partisan lean as more predictive than the midterm wave; Claude’s 0.42 relies on an unsupported claim about GOP-favoring polling errors; market at 0.50 better reflects genuine toss-up uncertainty given… Supervisor (+0): Genuine toss-up; hold 48.
+- **A6 Kansas Senate.** Critic (away_from_market, medium confidence): Polls with documented Democratic nonresponse bias (WaPo) and within-margin leads (CNN) overstate Hamilton's edge; market heavily underweights Kansas's R+10 PVI, 94-year Democratic Senate drought, and Trump's 15+ point margin, suggesting an overcorrection to… Supervisor (+0): Hold 62.
+- **A7 Alaska Senate.** Critic (away_from_market, medium confidence): Market overweights a single +7 Siena poll and underweights Alaska’s strong GOP baseline and incumbency. Panel correctly caps probability near 0.60 given history, RCV uncertainty, and polling error risk. Supervisor (+0): Hold 66; RCV count may take days.
 
-### Part A: House races (A8–A13)
+### Part A: House races
 
-| Q | District | Market (Kalshi / Poly) | Panel | Own | Method | Final (run 2) |
-|---|---|---|---|---|---|---|
-| A8 | FL-14 | 73.0 (71.5 / 74.5) | 55, 53, 53 | 51.7 | 71 | 65 |
-| A9 | FL-22 | 64.5 (63.5 / 65.5) | 52, 48, 48 | 45.5 | 64 | 58 |
-| A10 | ME-02 | 40.8 (42.0 / 39.5) | 38, 42, 35 | 35.2 | 41 | 42 |
-| A11 | MI-04 | 60.5 (61.5 / 59.5) | 42, 44, 42 | 40.0 | 58 | 58 |
-| A12 | MT-01 | 59.2 (59.0 / 59.5) | 52, 58, 52 | 52.5 | 59 | 60 |
-| A13 | VA-01 | 80.0 (80.5 / 79.5) | 52, 52, 48 | 50.5 | 79 | 79 |
+| Q | Race | Market (Kalshi / Poly) | Panel | Own | Weight damping | Method | Final |
+|---|---|---|---|---|---|---|---|
+| A8 | FL-14 | 73.0 (71.5 / 74.5) | 52, 57, 58 | 58.7 | 0.59 | 72 | **72** |
+| A9 | FL-22 | 63.0 (62.5 / 63.5) | 47, 49, 45 | 46.3 | 0.31 | 62 | **62** |
+| A10 | ME-02 | 39.0 (40.5 / 37.5) | 35, 38, 32 | 31.6 | 0.65 | 39 | **39** |
+| A11 | MI-04 | 60.5 (61.5 / 59.5) | 45, 51, 51 | 51.2 | 0.83 | 60 | **60** |
+| A12 | MT-01 | 60.0 (60.5 / 59.5) | 40, 62, 48 | 47.5 | 0.71 | 59 | **59** |
+| A13 | VA-01 | 74.5 (74.5 / 74.5) | 48, 55, 47 | 47.5 | 0.32 | 73 | **73** |
 
-- **A8 FL-14.** A redrawn Trump+10.5 district with no district polling. The critic said with high confidence that the market prices a generic wave. The method moves 2 points (71). Run 2's final went to 65, an override the new prompt removes.
-- **A9 FL-22.** R+4 PVI, Trump+11, Tilt R rating, and a Republican fundraising lead. The market had a **negative** 7-day drift, and its 1-day move cut our weight to 0.34. The method moves only half a point (64).
-- **A10 ME-02.** The only House race priced **below 50%**, and the one with the largest venue gap (Kalshi 2.5 points above Polymarket) and a 2-cent spread, the thinnest market here. Ranked-choice voting applies. The panel agreed with the market's direction (35). The no-crossing rule keeps the method at 41: our view is below the market, so the answer can't sit above it.
-- **A11 MI-04.** The critic found that the panel had anchored on a **stale Kalshi figure of about 40%** that had leaked into the research, while the live market is 60.5. It is a clear case of the critic protecting the blind panel's independence. The method stays 2.5 points below the market (58).
-- **A12 MT-01.** A late Montana State University poll and a Libertarian spoiler, plus a +14 point 7-day drift. The critic said the panel was slow to react. The method stays at the market (59).
-- **A13 VA-01.** The market moved **+16.7 points in 7 days** to 80%, and the 1-day drift cut our weight to 0.24, the smallest of any race. The panel (about 50%) hadn't seen whatever moved the market. The method sits 1 point below the market (79). This is the drift damping doing exactly its job.
+- **A8 FL-14.** Critic (away_from_market, high confidence): Market overestimates Dem chance; Trump+11 baseline implies even D+9 wave yields R+3.5 district, inconsistent with 0.73. Polls are small/stale; incumbency and fundraising do not overcome fundamental lean. Panel avg ~0.55 better reflects fundamentals. Supervisor (+0): Below market but consistent with Trump+11 baseline under D+9 wave; hold.
+- **A9 FL-22.** Critic (away_from_market, medium confidence): Stale tied poll; PVI and Trump margin double counted; no fresh results; market premium unsupported by cited evidence. Supervisor (+0): Hold 58.
+- **A10 ME-02.** Critic (hold, medium confidence): Double counting of PVI/Trump/ratings; D internal stale and partisan; D+9 ballot unsupported; RCV over-weighted; Gemini more credible than GPT. Supervisor (+0): Hold 36.
+- **A11 MI-04.** Critic (away_from_market, medium confidence): Market overweighting generic-ballot wave; stale PVI trivialised; no independent polls; double-counting toss-up shift as fundaments move; ignoring incumbency base rate. Supervisor (+0): Hold 57.
+- **A12 MT-01.** Critic (away_from_market, medium confidence): Stale outlier poll (MSU) and overreliance on fundraising/ midterm waves without proper reversion to R+6 base rate; market likely overweighting late Democratic drift with no new decisive data. Supervisor (+0): Hold 56.
+- **A13 VA-01.** Critic (toward_market, medium confidence): Panel fabricates unsourced national environment numbers (D+8-9 generic ballot, Trump approval) and fails to reconcile them with its own low probabilities. Wittman’s incumbency advantage is already public and priced; no overlooked evidence justifies the wide… Supervisor (+0): Panel inconsistency already corrected toward market; hold 68.
 
-### Part A: chamber control (A14–A15)
+### Part A: chamber control
 
-| Q | Chamber | Market (Kalshi / Poly) | Panel | Own | Method | Final (run 2) |
-|---|---|---|---|---|---|---|
-| A14 | House (218+) | 93.7 (92.95 / 94.5) | 92, 94, 91 | 95.5 | 95 | 95 |
-| A15 | Senate (51+) | 73.0 (72.5 / 73.5) | 55, 55, 68 | 54.2 | 71 | 71 |
+| Q | Race | Market (Kalshi / Poly) | Panel | Own | Weight damping | Method | Final |
+|---|---|---|---|---|---|---|---|
+| A14 | House control (218+) | 94.2 (93.85 / 94.5) | 93, 96, 93 | 96.2 | 1.0 | 95 | **95** |
+| A15 | Senate control (51+) | 74.5 (73.5 / 75.5) | 35, 43, 56 | 43.3 | 0.83 | 68 | **68** |
 
-- **A14 House.** The most liquid market (0.1-cent spread) and the closest agreement with the panel. Extremizing the panel median (92) gives 95.5. The supervisor checked it against the scenario probabilities (D House = 93.6%). The method answer is 95.
-- **A15 Senate.** The supervisor checked it against the race answers as a seat ladder. Expected Democratic flips are about 4.5 against 4 needed. Michigan hold risk and the correlated overpricing of red states justify sitting slightly under the market. The method answer is 71. It's consistent with the race answers, which mostly sit 1–3 points under their markets.
+- **A14 House control (218+).** Critic (hold, high confidence): Double counting of same polling signal via multiple ratings; 0.96 estimate slightly overconfident relative to historical polling error risk; no gap between panel consensus and market. Supervisor (+0): Coherent with D+9 ballot and Sabato 239 D; hold 95.
+- **A15 Senate control (51+).** Critic (away_from_market, medium confidence): Market likely overweights a uniform wave narrative; panel appropriately discounts polling leads based on historical overstatement of Democratic support in red states and structural barriers to a net +4 seat flip. Supervisor (+2): Own 41.3 incoherent with A1-A7 seat math (~4.7 expected flips) and with A14; critic double-counts poll-error discount. Move to ~70.
 
-### Part B: market questions (B1–B10)
+### Part B: market questions
 
-| Q | Instrument | Unit | Typical move | Past election nights (2016, 2018, 2020, 2022, 2024) | Panel mixture medians | Own | Shrink | Answer |
+| Q | Instrument | Unit | Typical move | Past election nights (2016, 2018, 2020, 2022, 2024) | Panel mixture medians | Own | Shrink | Final |
 |---|---|---|---|---|---|---|---|---|
-| B1 | SPY | % | 0.45 | +1.1, +2.1, +2.2, −2.1, +2.5 | −0.63, +0.43, +0.58 | +0.43 | none (4 of 5 up) | +0.28 |
-| B2 | IWM | % | 0.52 | +3.1, +1.8, +0.1, −2.8, +5.8 | −0.99, −0.20, −0.04 | −0.20 | ×0.8 | −0.03 |
-| B3 | NVDA | % | 1.36 | −1.7, +1.3, +6.0, −5.7, +4.1 | −1.33, −0.06, +0.71 | −0.06 | ×0.8 | +0.03 |
-| B4 | VIX | points | 0.64 | −4.4, −3.6, −6.0, +0.6, −4.2 | +1.42, −2.69, −1.66 | −1.7 | none (4 of 5 down) | −1.4 |
-| B5 | US 2-year | bp | 3.0 | +3, +3, −3, −6, +8 | −4.3, −0.8, −1.3 | −1.3 | ×0.8 | −1.0 |
-| B6 | US 10-year | bp | 4.0 | +19, 0, −12, −2, +16 | −5.2, −1.4, −1.4 | −1.4 | ×0.8 | −1.3 |
-| B7 | UK 10-year gilt | bp | 2.76 | +0.4, +0.1, −6.1, −10.3, −1.2 | −2.5, −0.4, −0.9 | −0.9 | ×0.8 | −0.8 |
-| B8 | Gold (Dec 26) | % | 0.67 | −0.1, +0.2, −0.7, −0.1, −2.7 | +0.32, +0.18, +0.15 | +0.18 | ×0.8 | +0.14 |
-| B9 | WTI (Dec 26) | % | 1.87 | +0.6, −0.9, +4.0, −3.5, −0.4 | +0.97, +0.10, +0.22 | +0.22 | ×0.8 | +0.18 |
-| B10 | Henry Hub (Dec 26) | % | 1.81 | +2.2, 0.0, −0.4, −4.5, +2.9 | +0.45, +0.11, +0.18 | +0.18 | ×0.8 | +0.14 |
+| B1 | SPY | % | 0.452 | +1.06, +2.14, +2.23, -2.06, +2.49 | +0.28, -0.07, +0.42 | +0.28 | none | **+0.28** |
+| B2 | IWM | % | 0.522 | +3.08, +1.79, +0.11, -2.75, +5.79 | -1.01, -0.51, -0.07 | -0.16 | ×0.8 | **-0.13** |
+| B3 | NVDA | % | 1.36 | -1.69, +1.29, +5.95, -5.66, +4.07 | -1.59, -0.30, -0.24 | -0.1 | ×0.8 | **-0.08** |
+| B4 | VIX | points | 0.64 | -4.36, -3.55, -5.98, +0.55, -4.22 | -1.85, -3.19, -1.55 | -1.9 | none | **-1.9** |
+| B5 | US 2-year | bp | 3.0 | +3, +3, -3, -6, +8 | -4.51, -0.93, -2.52 | -1.5 | ×0.8 | **-1.2** |
+| B6 | US 10-year | bp | 4.0 | +19, +0, -12, -2, +16 | -3.08, +0.52, -0.89 | -0.9 | ×0.8 | **-0.7** |
+| B7 | UK 10-year gilt | bp | 2.76 | +0.43, +0.06, -6.08, -10.25, -1.19 | -4.95, -0.74, -1.36 | -1 | ×0.8 | **-0.8** |
+| B8 | Gold (Dec 26) | % | 0.669 | -0.06, +0.2, -0.74, -0.13, -2.67 | +0.49, +0.12, +0.11 | +0.12 | ×0.8 | **+0.1** |
+| B9 | WTI (Dec 26) | % | 1.87 | +0.64, -0.87, +3.96, -3.46, -0.42 | +0.48, +0.15, +0.05 | +0.15 | ×0.8 | **+0.12** |
+| B10 | Henry Hub (Dec 26) | % | 1.81 | +2.16, +0, -0.42, -4.45, +2.88 | +0.31, +0.18, +0.19 | +0.19 | ×0.8 | **+0.15** |
 
-Run 2's final calls kept the method's answer for all ten Part B questions.
-
-- **B1 SPY.** Equities rose after 4 of the last 5 elections, so there was no shrink. The supervisor trimmed +0.43 to +0.28 because a gain of nearly one typical move doesn't fit flat or negative IWM and NVDA forecasts. That's the cross-question consistency check at work.
-- **B2 IWM.** Small caps are the most sensitive to policy. The panel's D sweep moves ranged from −1.3 to −0.35. The critic called −1.3 double counting of tax fears for an outcome already 72% priced, and the supervisor lifted the answer to about 0.
-- **B3 NVDA.** The highest-volatility instrument (typical move 1.36%). The panel straddled zero. The critic noted that NVDA's 7% slide before the election had already priced some risk. The answer is essentially flat (+0.03).
-- **B4 VIX.** The clearest repeated effect: the VIX fell after 4 of the last 5 elections as uncertainty resolved, so there was no shrink. One panellist predicted a spike on a D sweep, and the critic rejected it against that base rate. The supervisor softened −1.7 to −1.4, so it matches the trimmed equity gain and allows for Maine and Alaska ranked-choice counts leaving the Senate uncalled.
-- **B5 and B6, Treasuries.** The answer is a mild bull flattening (2-year −1.0, 10-year −1.3), consistent with gridlock-style outcomes and with no FOMC meeting before 8–9 Dec. The critic flagged one panellist's −6 and −4bp as ignoring 2018's 0bp after an expected midterm result.
-- **B7 UK gilt.** Kept at about 0.6× the move in Treasuries (−0.8bp), with no UK event until the 5 Nov MPC.
-- **B8 Gold.** A small gain (+0.14%) that fits lower real yields and a softer dollar. The critic caught a stale intraday quote.
-- **B9 WTI.** The critic flagged a stale price and noted that 2018 (a divided Congress) argues against a strong positive move. Shrinking gives +0.18%, well within the noise (typical move 1.87%).
-- **B10 Henry Hub.** Mostly driven by weather, so the supervisor applied no cross-market constraint. The answer is a small +0.14%.
+- **B1 SPY.** Critic (toward_market): Stale intraday price; ignores base rate of large historical post-election moves (avg >±1%) and omits contested/delayed scenario; panel disagrees on D sweep and R House/D Senate with weak justification for subdued moves; market likely prices higher move given… Supervisor (+0): Anchor of the risk-on state; +0.28% is modest vs 0.45% typical daily move and consistent with a VIX crush. Hold.
+- **B2 IWM.** Critic (away_from_market): Unverified 74% D-sweep probability; underweighted 2018 base-rate move of +1.79% for split Congress; panel D-sweep estimates too disparate (Claude -1.3% vs Gemini -0.35%); overall expected panel move slightly negative, possibly too cautious versus historical… Supervisor (+0.35): Raise to ~-0.06%: IWM cannot be down 0.4% while SPY is up and VIX falls 1.9 pts; 2018 split-Congress analogue was IWM +1.8%. Sector headwinds are relative, not absolute.
+- **B3 NVDA.** Critic (hold): Claude mislabels the baseline 74% D sweep as tail risk and assigns a -2.2% move detached from base rates for expected outcomes; Gemini contradicts provided research by calling R sweep bullish. Weighted panel spread (-1.4% to -0.2%) reflects those divergences,… Supervisor (+0.2): Raise to ~-0.04%: high-beta megacap should not be negative in a risk-on/vol-crush state; critic already flags the -2.2% panel leg as detached from base rates.
+- **B4 VIX.** Critic (hold): No market data to assess gap; historical base rates strongly favor declines nearer -3 to -4 for resolved D-House/R-Senate; R-House/D-Senate spike plausible but contingent on prolonged uncertainty; 4 Nov macro/earnings noise ignored; hedging claim unsupported. Supervisor (+0): -1.9 is ~3x typical daily move but defensible for event resolution; keep as the risk-on anchor. Note RCV delays in ME/AK cap how much vol can crush.
+- **B5 US 2-year.** Critic (hold): Panel disagrees on priced baseline: Claude/Gemini see divided government largely priced, while GPT-6-sol assumes D sweep is priced, producing a reversal sign for split Congress (+2 bp). GPT-6-sol's rationale contradicts gridlock logic and is unsubstantiated.… Supervisor (+1): Raise to ~-1.0 bp: a 2 bp front-end rally conflicts with equities up/VIX down and no FOMC until 8-9 Dec; keeps the bull steepener but smaller.
+- **B6 US 10-year.** Critic (toward_market): 2018 midterm (D House/R Senate) base rate of 0 bp ignored, making split‑Congress rally forecasts unsupported; heavily priced D sweep should yield moves near zero per past midterms, so panel’s -3 to +1 range is too wide and overly skewed to a decline. Supervisor (+0): -0.7 bp vs 2y -1.0 bp preserves modest steepening consistent with long-end fiscal friction under divided government. Hold.
+- **B7 UK 10-year gilt.** Critic (hold): Claude’s –6 bp D sweep move contradicts its own assertion that the outcome is heavily priced. Historical base rate from similar expected outcomes (2018 midterm) shows near-zero yield change. Panel consensus of –2.5 bp down is slightly dovish but justifiable… Supervisor (+0.4): Raise to ~-0.7 bp: gilt beta to a US-specific catalyst must be <1 vs the 10y Treasury's -0.7 bp; BoE lands 5 Nov, not 4 Nov, so no extra dovish impulse on the day.
+- **B8 Gold (Dec 26).** Critic (away_from_market): Stale, unsourced probabilities; historical base rates show much smaller election-day reactions; R-sweep conditionals likely overstated; Anthropic more convincing on split Congress; no evidence of unpriced information. Supervisor (+0): +0.1% coherent with slightly lower yields offset by safe-haven unwind; well inside 0.67% typical move. Hold.
+- **B9 WTI (Dec 26).** Critic (hold): Conflicting 3 Nov close; double-counted USD/regulatory and inventory channels; weak use of post-election base rates; Claude split-Congress sign unconvincing vs GPT/Gemini; no clear unpriced information justifies moving away from market. Supervisor (+0): +0.12% consistent with mildly positive equities and no oil-specific catalyst; far inside 1.87% typical move. Hold.
+- **B10 Henry Hub (Dec 26).** Critic (hold): Minor data conflict (close $2.895 vs $2.905). Panel splits on R sweep magnitude; GPT's larger -1.1% is more consistent with historical election-surprise moves. Expected panel move ~+0.2% appears largely priced given high D-sweep probability, limiting any gap. Supervisor (+0): +0.15% is noise-level and directionally consistent with oil; data conflict on the 3 Nov close ($2.895 vs $2.905) is immaterial at this magnitude. Hold.
 
 ---
 
@@ -273,3 +272,20 @@ ftf.submit(answers, run=3)                 # the real submission
 - OpenRouter models: Gemini 3.8 Flash, Claude Sonnet 5, GPT-6 Sol, Gemini 4 Argon, DeepSeek V4 Pro and Claude Opus 5. Web search through OpenRouter (`online=True`).
 - Our own Python (pandas and the standard library).
 - No other APIs or data sources. Claude (Anthropic) helped write and review the code. No answer was set by hand.
+
+## 9. Submission and run history
+
+| | |
+|---|---|
+| **Final run** | `team-dsl-run-3`: one complete run of the pipeline above, from research to final, for all 25 questions |
+| **Code** | git commit `6d9c2ee`, no uncommitted changes (recorded in `swarm_out/run-3/data_desk.json`) |
+| **Submitted** | 21:31:53 GMT on 3 Nov 2026, submission `0995fa7e-9c01-4588-8fc6-d3330b9d1c43`, version 2, team name DarkKnight |
+| **Answers** | Equal to the last final call of each question in run 3; the dry run raised no warnings |
+| **After the run** | No model calls were made by any team machine |
+
+Our team worked from two machines that shared one team key, so the labels of the earlier runs overlap:
+- **`run-1`** holds a swarm run from one machine (18:13–18:23 GMT, submitted at 19:12 as version 1) and a simpler two-model prototype (`ai_only/agent.py`) from the other (18:30–18:37 GMT).
+- **`run-2`** is a swarm run (18:53–18:58 GMT) whose results led to the fixes in section 6.
+- **`test` and `swarm-test`** were small tests.
+
+Run 3 replaces all of them.
